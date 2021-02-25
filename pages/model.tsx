@@ -1,10 +1,14 @@
 import { useState } from "react";
 import _ from "lodash";
-import styles from "../styles/Home.module.css";
+import { TestResult } from "./api/nlpModelTestService";
+import { DEFUALT_NLP_PAIRS } from "./modelService";
+import { ModelTestResult } from "../src/ModelResult";
 
 export default function Home() {
-  const [nlpPairs, setNlpPairs] = useState<string>("");
-  const [accuracies, setAccuracies] = useState<number[]>([]);
+  const [nlpPairs, setNlpPairs] = useState<string>(
+    JSON.stringify(DEFUALT_NLP_PAIRS)
+  );
+  const [testResults, setTestResults] = useState<TestResult[]>([]);
   return (
     <div>
       <h1>Model testing</h1>
@@ -22,15 +26,17 @@ export default function Home() {
             body: nlpPairs,
           });
           const parsed = await res.json();
-          setAccuracies(parsed.accuracies);
+          setTestResults(parsed.testResults);
         }}
       >
         Test
       </button>
       <div>
-        AVG: <strong>{_.mean(accuracies)}</strong>
-        {accuracies.map((acc) => (
-          <div key={acc}>{acc}</div>
+        <h2>
+          AVG: {_.meanBy(testResults, (testResult) => testResult.accuracy)}
+        </h2>
+        {testResults.map((testResult) => (
+          <ModelTestResult testResult={testResult} />
         ))}
       </div>
     </div>

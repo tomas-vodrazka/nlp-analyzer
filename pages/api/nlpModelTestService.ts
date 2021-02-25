@@ -13,6 +13,18 @@ export interface NlpPair {
 
 export type Fold = NlpCase[];
 
+export interface ConfusionMatrix {
+  [key: string]: {
+    total: number;
+    [key: string]: number;
+  };
+}
+
+export interface TestResult {
+  accuracy: number;
+  confusionMatrix: ConfusionMatrix;
+}
+
 function createNlpManager() {
   return new NlpManager({
     languages: ["cs"],
@@ -30,7 +42,7 @@ function createNlpManager() {
 export async function crossValidateManager(
   k: number,
   nlpPairs: NlpPair[]
-): Promise<number[]> {
+): Promise<TestResult[]> {
   const folds = splitToKFolds(k, nlpPairs);
   const results = await testFolds(folds);
 
@@ -72,24 +84,40 @@ export function foldsToCases(folds: Fold[]): NlpCase[] {
 export async function getModelAccuracy(
   model: any,
   testCases: NlpCase[]
-): Promise<number> {
+): Promise<TestResult> {
   let correctAnswers = 0;
+
+  const confusionMatrix = {};
 
   for (let i = 0; i < testCases.length; i += 1) {
     const testCase = testCases[i];
     const predicted = await model.process("cs", testCase.utterance);
     const intent = predicted.intent;
 
+    if (!confusionMatrix[testCase.id]) {
+      confusionMatrix[testCase.id] = {
+        total: 0,
+      };
+    }
+
+    confusionMatrix[testCase.id].total += 1;
+
+    if (!confusionMatrix[testCase.id][intent]) {
+      confusionMatrix[testCase.id][intent] = 0;
+    }
+
+    confusionMatrix[testCase.id][intent] += 1;
+
     if (intent === testCase.id) {
       correctAnswers += 1;
     }
   }
 
-  return correctAnswers / testCases.length;
+  return { accuracy: correctAnswers / testCases.length, confusionMatrix };
 }
 
-export async function testFolds(folds: Fold[]): Promise<number[]> {
-  const results: number[] = [];
+export async function testFolds(folds: Fold[]): Promise<TestResult[]> {
+  const results: TestResult[] = [];
   for (let i = 0; i < folds.length; i += 1) {
     const test = folds[i];
     const train = foldsToCases(_.without(folds, test));
