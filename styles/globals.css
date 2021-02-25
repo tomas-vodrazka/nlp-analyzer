@@ -15,6 +15,23 @@ a {
   padding-left: 30px;
 }
 
+th {
+  text-align: left;
+  padding: 4px 2px;
+}
+
+td {
+  text-align: right;
+  padding: 4px 2px;
+}
+
+tr:nth-child(even) {
+  background: white;
+}
+tr:nth-child(odd) {
+  background: #eee;
+}
+
 * {
   box-sizing: border-box;
 }

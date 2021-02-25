@@ -3,6 +3,7 @@ import _ from "lodash";
 import { TestResult } from "./api/nlpModelTestService";
 import { DEFUALT_NLP_PAIRS } from "../src/modelService";
 import { ModelTestResult } from "../src/ModelResult";
+import { ResultsOverview } from "../src/ResultsOverview";
 
 export default function Home() {
   const [nlpPairs, setNlpPairs] = useState<string>(
@@ -31,14 +32,20 @@ export default function Home() {
       >
         Test
       </button>
-      <div>
-        <h2>
-          AVG: {_.meanBy(testResults, (testResult) => testResult.accuracy)}
-        </h2>
-        {testResults.map((testResult) => (
-          <ModelTestResult testResult={testResult} />
-        ))}
-      </div>
+      {testResults.length > 0 && (
+        <div>
+          <h2>
+            AVG: {_.meanBy(testResults, (testResult) => testResult.accuracy)}
+          </h2>
+          <ResultsOverview
+            testResults={testResults}
+            intentsList={JSON.parse(nlpPairs).map((pair) => pair.id)}
+          />
+          {testResults.map((testResult) => (
+            <ModelTestResult testResult={testResult} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
