@@ -2,7 +2,6 @@ import { useState } from "react";
 import _ from "lodash";
 import { TestResult } from "./api/nlpModelTestService";
 import { DEFUALT_NLP_PAIRS } from "../src/modelService";
-import { ModelTestResult } from "../src/ModelResult";
 import { ResultsOverview } from "../src/ResultsOverview";
 
 export default function Home() {
