@@ -32,6 +32,14 @@ tr:nth-child(odd) {
   background: #eee;
 }
 
+td.final-avg {
+  background-color: forestgreen;
+}
+
+.results-overview {
+  margin-top: 40px;
+}
+
 * {
   box-sizing: border-box;
 }

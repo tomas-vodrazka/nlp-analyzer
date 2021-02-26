@@ -33,18 +33,10 @@ export default function Home() {
         Test
       </button>
       {testResults.length > 0 && (
-        <div>
-          <h2>
-            AVG: {_.meanBy(testResults, (testResult) => testResult.accuracy)}
-          </h2>
-          <ResultsOverview
-            testResults={testResults}
-            intentsList={JSON.parse(nlpPairs).map((pair) => pair.id)}
-          />
-          {testResults.map((testResult) => (
-            <ModelTestResult testResult={testResult} />
-          ))}
-        </div>
+        <ResultsOverview
+          testResults={testResults}
+          intentsList={JSON.parse(nlpPairs).map((pair) => pair.id)}
+        />
       )}
     </div>
   );

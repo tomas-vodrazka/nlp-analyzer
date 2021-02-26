@@ -6,11 +6,9 @@ interface Props {
   };
 }
 
-export const ConfusionMatrixForIntent: React.FC<Props> = ({
-  intentResults,
-}) => {
+export const IntentResults: React.FC<Props> = ({ intentResults }) => {
   return (
-    <div>
+    <p>
       {Object.keys(intentResults).map((result) => {
         return (
           <div className="result-miss" key={result}>
@@ -18,6 +16,6 @@ export const ConfusionMatrixForIntent: React.FC<Props> = ({
           </div>
         );
       })}
-    </div>
+    </p>
   );
 };
