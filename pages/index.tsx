@@ -6,6 +6,7 @@ export default function Home() {
   const [textToFilter, setTextToFilter] = useState("");
   return (
     <div>
+      <h2>Text processing pipeline</h2>
       <input
         type="text"
         onChange={(e) => {
