@@ -23,6 +23,10 @@ export function repalceIntent(
   intent: NLPIntent,
   entitiesByIds: { [key: string]: string[] }
 ): NLPIntent {
+  if (!intent.utterances) {
+    return intent;
+  }
+
   const replaceUntterences = [];
   intent.utterances.forEach((utterance) => {
     const founds = utterance.match(/\{[a-z0-9-]+\}/gi);

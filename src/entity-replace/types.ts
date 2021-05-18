@@ -15,5 +15,5 @@ export interface EnityOption {
 
 export interface NLPIntent {
   id: string;
-  utterances: string[];
+  utterances?: string[];
 }
