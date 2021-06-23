@@ -45,7 +45,7 @@ export const ResultsOverview: React.FC<Props> = ({
             <tr>
               <th>{intent}</th>
               {testResults.map((result) => {
-                const intentResult = result.confusionMatrix[intent];
+                const intentResult = result.confusionMatrix[intent] ?? { total: 0 };
                 const correct = intentResult[intent] ?? 0;
                 const accuracy = correct / intentResult.total;
                 totalCount += intentResult.total;

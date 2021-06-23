@@ -25,7 +25,7 @@ export interface TestResult {
   confusionMatrix: ConfusionMatrix;
 }
 
-function createNlpManager() {
+export function createNlpManager() {
   return new NlpManager({
     languages: ["cs"],
     nlu: {
